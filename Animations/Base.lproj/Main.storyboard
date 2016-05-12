@@ -25,12 +25,22 @@
                                     <segue destination="05g-rS-yYt" kind="show" identifier="Show" id="hHu-uX-8La"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2W-NK-cli">
+                                <rect key="frame" x="40" y="500" width="520" height="30"/>
+                                <state key="normal" title="Animate"/>
+                                <connections>
+                                    <action selector="animateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vhq-QF-MM7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="c2W-NK-cli" secondAttribute="trailing" constant="20" id="0ez-82-4dD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LbZ-Eg-vUX" secondAttribute="trailing" constant="20" id="Cjk-BK-8VR"/>
                             <constraint firstItem="LbZ-Eg-vUX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="OoP-87-51i"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LbZ-Eg-vUX" secondAttribute="bottom" constant="20" id="gWC-uU-chd"/>
+                            <constraint firstItem="LbZ-Eg-vUX" firstAttribute="top" secondItem="c2W-NK-cli" secondAttribute="bottom" constant="20" id="tyP-uf-y4o"/>
+                            <constraint firstItem="c2W-NK-cli" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="up4-aO-cDu"/>
                         </constraints>
                     </view>
                 </viewController>
