@@ -34,39 +34,39 @@ class ViewController: UIViewController {
     
     @IBAction func animateButtonTapped(sender: AnyObject) {
 
-        // set up some constants for the square
-        // set size to be a random number between 20.0 and 60.0
-        let size : CGFloat = CGFloat( arc4random_uniform(40))+20
-        
-        // set yPosition to be a random number between 20.0 and 220.0
-        let yPosition : CGFloat = CGFloat( arc4random_uniform(200))+20
-
-        let coloredSquare = UIView()
-
-        // create the square using these constants
-        // in this example I've also used the Objective-C convention for making the CGRect
-        // but I could have used CGRect(x:0, y:yPosition, width:size, height:size) like we've done previously - they are equivalent
-        coloredSquare.backgroundColor = UIColor.blueColor()
-        coloredSquare.frame = CGRectMake(0, yPosition, size, size)
-        self.view.addSubview(coloredSquare)
-
-        // set up some constants for the animation
-        let duration = 1.0
-        let delay = 0.0
-        let options = UIViewAnimationOptions.CurveLinear
-        
-        // define the animation
-        UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
+        // loop for 10 times
+        for _ in 0...10 {
             
-            coloredSquare.backgroundColor = UIColor.redColor()
+            // set up some constants for the animation
+            let duration : NSTimeInterval = 1.0
+            let options = UIViewAnimationOptions.CurveLinear
+
+            // randomly assign a delay of 0.9 to 1s
+            let delay = NSTimeInterval(900 + arc4random_uniform(100)) / 1000
             
-            // again use the square constants size and yPosition
-            coloredSquare.frame = CGRectMake(320-size, yPosition, size, size)
+            // set up some constants for the fish
+            let size : CGFloat = CGFloat( arc4random_uniform(40))+20
+            let yPosition : CGFloat = CGFloat( arc4random_uniform(200))+20
             
-            }, completion: { animationFinished in
+            // create the fish and add it to the screen
+            let fish = UIImageView()
+            fish.image = UIImage(named: "blue-fish")
+            fish.frame = CGRectMake(0-size, yPosition, size, size)
+            self.view.addSubview(fish)
+            
+            // define the animation
+            UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
                 
-                coloredSquare.removeFromSuperview()
-        })
+                // move the fish
+                fish.frame = CGRectMake(320, yPosition, size, size)
+                
+                }, completion: { animationFinished in
+                    
+                    // remove the fish
+                    fish.removeFromSuperview()
+                    
+            })
+        }
     }
     
     // we override this method to manage what style status bar is shown
