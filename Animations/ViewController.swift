@@ -11,16 +11,9 @@ import UIKit
 class ViewController: UIViewController {
 
     let transitionManager = TransitionManager()
-    
-    let fish = UIImageView()
-    
+
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // create and add blue-fish.png image to screen
-        fish.image = UIImage(named: "blue-fish")
-        fish.frame = CGRect(x: 50, y: 50, width: 75, height: 50)
-        self.view.addSubview(fish)
+        super.viewDidLoad()        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -40,31 +33,42 @@ class ViewController: UIViewController {
     
     @IBAction func animateButtonTapped(sender: AnyObject) {
 
-        // angles in iOS are measured as radians PI is 180 degrees so PI × 2 is 360 degrees
-        let fullRotation = CGFloat(M_PI * 2)
-        
-        let duration = 2.0
-        let delay = 0.0
-        let options = UIViewKeyframeAnimationOptions.CalculationModePaced
-        
-        UIView.animateKeyframesWithDuration(duration, delay: delay, options: options, animations: {
+        // loop from 0 to 5
+        for i in 0...5 {
             
-            // note that we've set relativeStartTime and relativeDuration to zero.
-            // Because we're using `CalculationModePaced` these values are ignored
-            // and iOS figures out values that are needed to create a smooth constant transition
-            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                self.fish.transform = CGAffineTransformMakeRotation(1/3 * fullRotation)
-            })
+            // create a square
+            let square = UIView()
+            square.frame = CGRect(x: 55, y: 300, width: 20, height: 20)
+            square.backgroundColor = UIColor.redColor()
+            self.view.addSubview(square)
             
-            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                self.fish.transform = CGAffineTransformMakeRotation(2/3 * fullRotation)
-            })
+            // randomly create a value between 0.0 and 150.0
+            let randomYOffset = CGFloat( arc4random_uniform(150))
             
-            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                self.fish.transform = CGAffineTransformMakeRotation(3/3 * fullRotation)
-            })
+            // for every y-value on the bezier curve
+            // add our random y offset so that each individual animation
+            // will appear at a different y-position
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: 16,y: 239 + randomYOffset))
+            path.addCurveToPoint(CGPoint(x: 301, y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
             
-            }, completion: nil)
+            // create the animation
+            let anim = CAKeyframeAnimation(keyPath: "position")
+            anim.path = path.CGPath
+            anim.rotationMode = kCAAnimationRotateAuto
+            anim.repeatCount = Float.infinity
+            
+            // each square will take between 4.0 and 8.0 seconds
+            // to complete one animation loop
+            anim.duration = Double(arc4random_uniform(40)+30) / 10
+            
+            // stagger each animation by a random value
+            // `290` was chosen simply by experimentation
+            anim.timeOffset = Double(arc4random_uniform(290))
+            
+            // add the animation 
+            square.layer.addAnimation(anim, forKey: "animate position along path")
+        }
     }
     
     // we override this method to manage what style status bar is shown
