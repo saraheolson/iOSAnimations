@@ -11,14 +11,10 @@ import UIKit
 class ViewController: UIViewController {
 
     let transitionManager = TransitionManager()
-
-    // set up some constants for the square
-    let size : CGFloat = 50
-    let yPosition : CGFloat = 120
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -38,32 +34,38 @@ class ViewController: UIViewController {
     
     @IBAction func animateButtonTapped(sender: AnyObject) {
 
-        // Create and add a colored square
+        // set up some constants for the square
+        // set size to be a random number between 20.0 and 60.0
+        let size : CGFloat = CGFloat( arc4random_uniform(40))+20
+        
+        // set yPosition to be a random number between 20.0 and 220.0
+        let yPosition : CGFloat = CGFloat( arc4random_uniform(200))+20
+
         let coloredSquare = UIView()
-        
-        // set background color to blue
+
+        // create the square using these constants
+        // in this example I've also used the Objective-C convention for making the CGRect
+        // but I could have used CGRect(x:0, y:yPosition, width:size, height:size) like we've done previously - they are equivalent
         coloredSquare.backgroundColor = UIColor.blueColor()
-        
-        // set frame (position and size) of the square
-        // iOS coordinate system starts at the top left of the screen
-        // so this square will be at top left of screen, 50x50pt
-        // CG in CGRect stands for Core Graphics
-        coloredSquare.frame = CGRect(x: 0, y: 120, width: 50, height: 50)
-        
-        // finally, add the square to the screen
+        coloredSquare.frame = CGRectMake(0, yPosition, size, size)
         self.view.addSubview(coloredSquare)
+
+        // set up some constants for the animation
+        let duration = 1.0
+        let delay = 0.0
+        let options = UIViewAnimationOptions.CurveLinear
         
-        UIView.animateWithDuration(1.0, animations: {
+        // define the animation
+        UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
             
-            // animate color change and position
             coloredSquare.backgroundColor = UIColor.redColor()
-            coloredSquare.frame = CGRect(x: 320-50, y: 120, width: 50, height: 50)
+            
+            // again use the square constants size and yPosition
+            coloredSquare.frame = CGRectMake(320-size, yPosition, size, size)
             
             }, completion: { animationFinished in
                 
-                // when complete, remove the square from the parent view
                 coloredSquare.removeFromSuperview()
-                
         })
     }
     
