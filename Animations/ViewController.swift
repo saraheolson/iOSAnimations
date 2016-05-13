@@ -12,6 +12,8 @@ class ViewController: UIViewController {
 
     let transitionManager = TransitionManager()
     
+    @IBOutlet weak var numberOfFishSlider: UISlider!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -34,8 +36,9 @@ class ViewController: UIViewController {
     
     @IBAction func animateButtonTapped(sender: AnyObject) {
 
-        // loop for 10 times
-        for _ in 0...10 {
+        let numberOfFish = Int(self.numberOfFishSlider.value)
+        
+        for _ in 1...numberOfFish {
             
             // set up some constants for the animation
             let duration : NSTimeInterval = 1.0
