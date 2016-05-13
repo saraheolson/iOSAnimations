@@ -12,8 +12,13 @@ class ViewController: UIViewController {
 
     let transitionManager = TransitionManager()
 
+    // set up some constants for the square
+    let size : CGFloat = 50
+    let yPosition : CGFloat = 120
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -33,40 +38,33 @@ class ViewController: UIViewController {
     
     @IBAction func animateButtonTapped(sender: AnyObject) {
 
-        // set up some values to use in the curve
-        let ovalStartAngle = CGFloat(90.01 * M_PI/180)
-        let ovalEndAngle = CGFloat(90 * M_PI/180)
-        let ovalRect = CGRectMake(97.5, 58.5, 125, 125)
+        // Create and add a colored square
+        let coloredSquare = UIView()
         
-        // create the bezier path
-        let ovalPath = UIBezierPath()
+        // set background color to blue
+        coloredSquare.backgroundColor = UIColor.blueColor()
         
-        ovalPath.addArcWithCenter(CGPointMake(CGRectGetMidX(ovalRect), CGRectGetMidY(ovalRect)),
-                                  radius: CGRectGetWidth(ovalRect) / 2,
-                                  startAngle: ovalStartAngle,
-                                  endAngle: ovalEndAngle, clockwise: true)
+        // set frame (position and size) of the square
+        // iOS coordinate system starts at the top left of the screen
+        // so this square will be at top left of screen, 50x50pt
+        // CG in CGRect stands for Core Graphics
+        coloredSquare.frame = CGRect(x: 0, y: 120, width: 50, height: 50)
         
-        // create an object that represents how the curve
-        // should be presented on the screen
-        let progressLine = CAShapeLayer()
-        progressLine.path = ovalPath.CGPath
-        progressLine.strokeColor = UIColor.blueColor().CGColor
-        progressLine.fillColor = UIColor.clearColor().CGColor
-        progressLine.lineWidth = 10.0
-        progressLine.lineCap = kCALineCapRound
+        // finally, add the square to the screen
+        self.view.addSubview(coloredSquare)
         
-        // add the curve to the screen
-        self.view.layer.addSublayer(progressLine)
-        
-        // create a basic animation that animates the value 'strokeEnd'
-        // from 0.0 to 1.0 over 3.0 seconds
-        let animateStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-        animateStrokeEnd.duration = 3.0
-        animateStrokeEnd.fromValue = 0.0
-        animateStrokeEnd.toValue = 1.0
-        
-        // add the animation
-        progressLine.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        UIView.animateWithDuration(1.0, animations: {
+            
+            // animate color change and position
+            coloredSquare.backgroundColor = UIColor.redColor()
+            coloredSquare.frame = CGRect(x: 320-50, y: 120, width: 50, height: 50)
+            
+            }, completion: { animationFinished in
+                
+                // when complete, remove the square from the parent view
+                coloredSquare.removeFromSuperview()
+                
+        })
     }
     
     // we override this method to manage what style status bar is shown
